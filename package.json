@@ -1,0 +1,15 @@
+{
+  "name": "skysuperbot",
+  "version": "1.0.0",
+  "description": "Chat Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Chat",
+    "Bot"
+  ],
+  "author": "Akash Sharma",
+  "license": "ISC"
+}
