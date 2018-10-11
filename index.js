@@ -16,7 +16,6 @@ bot.on('text', (ctx) => {
     console.log(ctx.message.chat);
 })
 
-
 //bot.telegram.sendMessage('596158889','Hi World');
 
 bot.startPolling()
