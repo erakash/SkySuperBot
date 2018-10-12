@@ -1,18 +1,18 @@
 {
-    "SkySuperBotDB": {
-      "dbConfig": {
-        "host": "",
-        "user": "",
-        "password": "",
-        "database": ""
-      },
-      "telegramtoken": {
-        "token": "",
-        "testtoken": "",
-        "prod": ""
-      },
-      "wittoken": {
-        "token": ""
-      }
+  "SkySuperBotDB": {
+    "dbConfig": {
+      "host"     : "192.168.0.20",
+      "user"     : "admin",
+      "password" : "letmeenter",
+      "database" : "SkySuperBot"
+    },
+    "telegramtoken": {
+      "token": "388556777:AAGztSNHiV7DQ8iHpz1xQG3JDv8WhAjpdmQ",
+      "testtoken": "388556777:AAGztSNHiV7DQ8iHpz1xQG3JDv8WhAjpdmQ",
+      "prod": "575268854:AAF8BsG__vbxoCbj5muG4F4tXz6H5jfcVhU"
+    },
+    "wittoken": {
+      "token": "4RKTZAN64P54GCIFSXTMH4DCG3NEZCBH"
     }
   }
+}
