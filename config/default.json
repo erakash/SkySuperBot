@@ -1,10 +1,17 @@
 {
   "SkySuperBotDB": {
     "dbConfig": {
+<<<<<<< HEAD
       "host": "localhost",
       "user": "skysuperbot",
       "password": "letmeenter",
       "database": "skysuperbot"
+=======
+      "host"     : "192.168.0.20",
+      "user"     : "admin",
+      "password" : "letmeenter",
+      "database" : "SkySuperBot"
+>>>>>>> 32d98d06e312681b48a51eabff700a55f3a81f5c
     },
     "telegramtoken": {
       "token": "388556777:AAGztSNHiV7DQ8iHpz1xQG3JDv8WhAjpdmQ",
