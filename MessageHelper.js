@@ -6,7 +6,7 @@ const bot = new Telegraf(telegraftoken);
 
 
 function SendMessageToUserId(userid,message){
-    bot.telegram.sendMessage(userid,message);
+    dbhelper.SendMessageToUserId(userid,message);
 }
 
 

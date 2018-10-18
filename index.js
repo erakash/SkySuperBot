@@ -1,4 +1,5 @@
 var config = require('config');
+const request = require('request');
 const Telegraf = require('telegraf')
 const TelegrafWit = require('telegraf-wit')
 var dbhelper = require('./DBHelper');
@@ -15,8 +16,20 @@ bot.on('text', (ctx) => {
     dbhelper.InsertUpdateDetails(ctx.message.chat);
 })
 
-//bot.telegram.sendMessage('596158889','Hi World');
-messagehelper.SendMessageToUserId('596158889','hey wassup');
-dbhelper.GetChatIdByUserId('akashsharma');
+//messagehelper.SendMessageToUserId('codejockey', 'hello');
 bot.startPolling()
+
+//Function with timers - It will update the sensors and environment parameters
+function SetSensorsParametersInDb() {
+    console.log('hello');
+    GetWeatherData();
+}
+setInterval(SetSensorsParametersInDb, 3000);
+
+function GetWeatherData() {
+    request('https://api.openweathermap.org/data/2.5/weather?zip=38016,us&appid='+config.get('SkySuperBotDB.apikeys.openweathermap'), { json: true }, (err, res, body) => {
+        if (err) { return console.log(err); }
+        console.log(body);
+    });
+}
 
