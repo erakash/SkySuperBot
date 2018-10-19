@@ -34,13 +34,13 @@ function SendMessageToUserId(username,message) {
   con.end();
 }
 
-function UpdateInsertHomeAttributes(attribute) {
+function UpdateInsertHomeAttributes(attributename,attributevalue) {
   var con = mysql.createConnection(dbConfig);
   con.connect(function (err) {
     if (err) throw err;
-    console.log("Connected!");
   });
-  var query = "CALL UpdateInsertHomeAttributes(" + attribute.name + ",'" + attribute.value + "');";
+  var query = "CALL UpdateInsertHomeAttributes('" + attributename + "','" + attributevalue + "');";
+  //console.log(query);
   con.query(query, function (error, results, fields) {
     if (error) throw error;
   });
@@ -49,3 +49,4 @@ function UpdateInsertHomeAttributes(attribute) {
 
 module.exports.InsertUpdateDetails = InsertUpdateDetails;
 module.exports.SendMessageToUserId = SendMessageToUserId;
+module.exports.UpdateInsertHomeAttributes = UpdateInsertHomeAttributes;
