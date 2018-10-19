@@ -5,7 +5,7 @@ const TelegrafWit = require('telegraf-wit')
 var dbhelper = require('./DBHelper');
 var messagehelper = require('./MessageHelper');
 var messageclassifier = require('./messageclassifier');
-
+var shellcommandhelper = require('./shellcommandhelper');
 var telegraftoken = config.get('SkySuperBotDB.telegramtoken.token');
 var wittoken = config.get('SkySuperBotDB.wittoken.token');
 const wit = new TelegrafWit(wittoken)
@@ -19,10 +19,14 @@ bot.on('text', (ctx) => {
     //console.log(classifier);
     switch (classifier) {
         case 'youtubelink':
-            ctx.reply('YOUTUBE LINK');
+        {
+            var youTubeLink = ctx.message.text.split("&");
+            console.log(youTubeLink[0]);
+            ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g '+ youTubeLink[0]+')');
             break;
+        }
         case 'optionnotavailable':
-            ctx.reply('Invalid Command');
+            console.log(shellcommandhelper.GetCommand(ctx.message));
             break;
         default:
             ctx.reply('Invalid Command');
