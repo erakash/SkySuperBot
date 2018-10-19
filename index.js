@@ -16,7 +16,6 @@ bot.hears('hi', (ctx) => ctx.reply('Hey there'));
 bot.on('text', (ctx) => {
     dbhelper.InsertUpdateDetails(ctx.message.chat);
     var classifier = messageclassifier.ClassifyMessage(ctx.message);
-    //console.log(classifier);
     switch (classifier) {
         case 'youtubelink':
         {
@@ -40,7 +39,7 @@ bot.startPolling()
 function SetSensorsParametersInDb() {
     GetWeatherData();
 }
-setInterval(SetSensorsParametersInDb, 300000);
+setInterval(SetSensorsParametersInDb, 3000);
 
 function GetWeatherData() {
     request('https://api.openweathermap.org/data/2.5/weather?zip=38016,us&appid=' + config.get('SkySuperBotDB.apikeys.openweathermap'), { json: true }, (err, res, body) => {

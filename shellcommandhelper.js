@@ -2,7 +2,7 @@ const fs = require('fs');
 const { exec } = require('child_process');
 const config = require('config');
 var mysql = require('mysql');
-var dbConfig = config.get('Skysuperbot.dbConfig');
+var dbConfig = config.get('SkySuperBotDB.dbConfig');
 
 
 function GetCommand(telegramcontext) {
@@ -16,7 +16,7 @@ function GetCommand(telegramcontext) {
     }});
     connection.end();
   }
-}
+
 
 
 function ExecuteCommand(command) {
