@@ -28,7 +28,6 @@ function SendMessageToUserId(username,message) {
   var query = "select id from botsubscribers WHERE username = '"+username+"'";
   con.query(query, function (error, results, fields) {
     if (error) throw error;
-    console.log(results);
     bot.telegram.sendMessage(results[0].id,message);
   });
   con.end();
@@ -40,9 +39,22 @@ function UpdateInsertHomeAttributes(attributename,attributevalue) {
     if (err) throw err;
   });
   var query = "CALL UpdateInsertHomeAttributes('" + attributename + "','" + attributevalue + "');";
-  //console.log(query);
   con.query(query, function (error, results, fields) {
     if (error) throw error;
+  });
+  con.end();
+}
+
+function GetRoleID(username) {
+  var con = mysql.createConnection(dbConfig);
+  con.connect(function (err) {
+    if (err) throw err;
+  });
+  var query = "select role from botsubscribers where username = '"+username+"';";
+  con.query(query, function (error, results, fields) {
+    if (error) throw error;
+    console.log(results[0].role);
+    return (results[0].role);
   });
   con.end();
 }
@@ -50,3 +62,4 @@ function UpdateInsertHomeAttributes(attributename,attributevalue) {
 module.exports.InsertUpdateDetails = InsertUpdateDetails;
 module.exports.SendMessageToUserId = SendMessageToUserId;
 module.exports.UpdateInsertHomeAttributes = UpdateInsertHomeAttributes;
+module.exports.GetRoleID = GetRoleID;
