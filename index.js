@@ -101,7 +101,7 @@ function GetWifiStatus() {
         con.query(query, function (error, results, fields) {
             ConnectedDevices.forEach(function (device) {
                 console.log(device);
-                var query = "INSERT INTO connecteddevices VALUES(" + device + "');";
+                var query = "INSERT INTO connecteddevices VALUES('" + device + "');";
                 con.query(query, function (error, results, fields) {
                     if (error) throw error;
                 });
