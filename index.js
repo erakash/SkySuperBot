@@ -92,7 +92,22 @@ function GetWeatherData() {
 }
 function GetWifiStatus() {
     exec("sudo arp-scan --localnet | awk -F'\t' '$2 ~ /([0-9a-f][0-9a-f]:){5}/ {print $2}'", (err, stdout, stderr) => {
-        console.log(stdout.split("\n"));
+        var ConnectedDevices = stdout.split("\n");
+        var con = mysql.createConnection(dbConfig);
+        con.connect(function (err) {
+            if (err) throw err;
+        });
+        var query = "TRUNCATE TABLE connecteddevices;"
+        con.query(query, function (error, results, fields) {
+            ConnectedDevices.forEach(function (device) {
+                console.log(device);
+                var query = "INSERT INTO connecteddevices VALUES(" + device + "');";
+                con.query(query, function (error, results, fields) {
+                    if (error) throw error;
+                });
+            });
+            con.end();
+        });
     });
 }
 
