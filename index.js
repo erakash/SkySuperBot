@@ -17,38 +17,40 @@ bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
 bot.on('text', (ctx) => {
     dbhelper.InsertUpdateDetails(ctx.message.chat);
-    var classifier = messageclassifier.ClassifyMessage(ctx.message);
-    var con = mysql.createConnection(dbConfig);
-    con.connect(function (err) {
-      if (err) throw err;
-    });
-    var query = "select role from botsubscribers where username = '"+ctx.message.chat.username+"';";
-    con.query(query, function (error, results, fields) {
-      if (error) throw error;
-      console.log(results[0].role);
-      if(results[0].role==1)
-      {
-        switch (classifier) {
-            case 'youtubelink':
-            {
-                var youTubeLink = ctx.message.text.split("&");
-                console.log(youTubeLink[0]);
-                ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g '+ youTubeLink[0]+')');
-                break;
+    messageclassifier.ClassifyMessage(ctx.message, function(classifier) {
+        var con = mysql.createConnection(dbConfig);
+        con.connect(function (err) {
+            if (err) throw err;
+        });
+        var query = "select role from botsubscribers where username = '" + ctx.message.chat.username + "';";
+        con.query(query, function (error, results, fields) {
+            if (error) throw error;
+            console.log(results[0].role);
+            if (results[0].role == 1) {
+                switch (classifier.type) {
+                    case 'youtubelink':
+                        {
+                            var youTubeLink = ctx.message.text.split("&");
+                            console.log(youTubeLink[0]);
+                            //ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g '+ youTubeLink[0]+')');
+                            break;
+                        }
+                    case 'commandnotavailable':
+                        ctx.reply('Invalid Command');
+                        break;
+                    case 'command':
+                        console.log('Run Command');
+
+                    default:
+                        ctx.reply('Invalid Command');
+                }
             }
-            case 'optionnotavailable':
-                //console.log(shellcommandhelper.GetCommand(ctx.message));
-                break;
-            default:
-                ctx.reply('Invalid Command');
-        }
-      }
-      else
-      {
-        ctx.reply('You are not admin');
-      }
+            else {
+                ctx.reply('You are not admin');
+            }
+        });
+        con.end();
     });
-    con.end();
 })
 
 //messagehelper.SendMessageToUserId('codejockey', 'hello');

@@ -10,7 +10,6 @@ function InsertUpdateDetails(chatinfo) {
   var con = mysql.createConnection(dbConfig);
   con.connect(function (err) {
     if (err) throw err;
-    //console.log("Connected!");
   });
   var query = "CALL UpdateInsertBotSubscribers(" + chatinfo.id + ",'" + chatinfo.first_name + "', '" + chatinfo.last_name + "', '" + chatinfo.username + "');";
   con.query(query, function (error, results, fields) {
