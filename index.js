@@ -10,8 +10,9 @@ var messageclassifier = require('./messageclassifier');
 var shellcommandhelper = require('./shellcommandhelper');
 var telegraftoken = config.get('SkySuperBotDB.telegramtoken.token');
 var wittoken = config.get('SkySuperBotDB.wittoken.token');
-const wit = new TelegrafWit(wittoken)
-const bot = new Telegraf(telegraftoken)
+const { exec } = require('child_process');
+const wit = new TelegrafWit(wittoken);
+const bot = new Telegraf(telegraftoken);
 
 bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
@@ -30,36 +31,36 @@ bot.on('text', (ctx) => {
                     case 'youtubelink':
                         {
                             var youTubeLink = ctx.message.text.split("&");
-                            console.log('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g '+ youTubeLink[0]+')');
-                            shellcommandhelper.ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g '+ youTubeLink[0]+')');
+                            console.log('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g ' + youTubeLink[0] + ')');
+                            shellcommandhelper.ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g ' + youTubeLink[0] + ')');
                             ctx.reply('Running Youtube Video');
                             break;
                         }
                     case 'commandnotavailable':
-                    {
-                        ctx.reply('Invalid Command');
-                        break;
-                    }
+                        {
+                            ctx.reply('Invalid Command');
+                            break;
+                        }
                     case 'command':
-                    {
-                        ctx.reply('Running Command');
-                        break;
-                    }
+                        {
+                            ctx.reply('Running Command');
+                            break;
+                        }
                     case 'script':
-                    {
-                        ctx.reply('Running Script');
-                        break;
-                    }                         
+                        {
+                            ctx.reply('Running Script');
+                            break;
+                        }
                     case 'commandnotavailable':
-                    {
-                        ctx.reply('Command not configured');
-                        break;
-                    }                        
+                        {
+                            ctx.reply('Command not configured');
+                            break;
+                        }
                     default:
-                    {
-                        ctx.reply('Invalid Command');
-                        break;
-                    }                        
+                        {
+                            ctx.reply('Invalid Command');
+                            break;
+                        }
                 }
             }
             else {
@@ -76,6 +77,7 @@ bot.startPolling()
 //Function with timers - It will update the sensors and environment parameters
 function SetSensorsParametersInDb() {
     GetWeatherData();
+    GetWifiStatus();
 }
 setInterval(SetSensorsParametersInDb, 3000);
 
@@ -86,6 +88,11 @@ function GetWeatherData() {
         dbhelper.UpdateInsertHomeAttributes('sunset', body.sys.sunset);
         dbhelper.UpdateInsertHomeAttributes('temp', body.main.temp);
         dbhelper.UpdateInsertHomeAttributes('weather', body.weather[0].id);
+    });
+}
+function GetWifiStatus() {
+    exec("sudo arp-scan --localnet | awk -F'\t' '$2 ~ /([0-9a-f][0-9a-f]:){5}/ {print $2}'", (err, stdout, stderr) => {
+        console.log(stdout);
     });
 }
 
