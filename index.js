@@ -92,7 +92,7 @@ function GetWeatherData() {
 }
 function GetWifiStatus() {
     exec("sudo arp-scan --localnet | awk -F'\t' '$2 ~ /([0-9a-f][0-9a-f]:){5}/ {print $2}'", (err, stdout, stderr) => {
-        console.log(stdout);
+        console.log(stdout.split("\n"));
     });
 }
 
