@@ -30,6 +30,7 @@ bot.on('text', (ctx) => {
                     case 'youtubelink':
                         {
                             var youTubeLink = ctx.message.text.split("&");
+                            console.log('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g '+ youTubeLink[0]+')');
                             shellcommandhelper.ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g '+ youTubeLink[0]+')');
                             ctx.reply('Running Youtube Video');
                             break;
