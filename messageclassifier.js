@@ -2,7 +2,7 @@ var mysql = require('mysql');
 const config = require('config');
 var dbConfig = config.get('SkySuperBotDB.dbConfig');
 
-function ClassifyMessage(telegramcontext,callback) {
+function ClassifyMessage(telegramcontext, callback) {
     var telegramcommand = telegramcontext.text.toLowerCase();
     var isYouTubeLink = telegramcommand.includes("youtu");
     var classificationresult = {};
@@ -19,15 +19,29 @@ function ClassifyMessage(telegramcontext,callback) {
         con.query(query, function (error, results, fields) {
             if (error) throw error;
             if (results[0]) {
-                classificationresult.type = 'command'
-                classificationresult.commandscript =  results[0].CommandScript;
-                callback(classificationresult);
-              }
-              else{
+                switch (results[0].CommandDesc) {
+                    case 'command':
+                    {
+                        classificationresult.type = 'command'
+                        classificationresult.commandscript = results[0].CommandScript;
+                        callback(classificationresult);
+                        break;
+                    }                        
+                    case 'script':
+                    {
+                        classificationresult.type = 'script'
+                        classificationresult.commandscript = results[0].CommandScript;
+                        callback(classificationresult);
+                        break;
+                    }                        
+                    default:
+                        break;
+                }
+            }
+            else {
                 classificationresult.type = 'commandnotavailable'
-                console.log(classificationresult);
                 callback(classificationresult);
-              }
+            }
         });
         con.end();
     }

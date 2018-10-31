@@ -17,7 +17,7 @@ bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
 bot.on('text', (ctx) => {
     dbhelper.InsertUpdateDetails(ctx.message.chat);
-    messageclassifier.ClassifyMessage(ctx.message, function(classifier) {
+    messageclassifier.ClassifyMessage(ctx.message, function (classifier) {
         var con = mysql.createConnection(dbConfig);
         con.connect(function (err) {
             if (err) throw err;
@@ -25,24 +25,40 @@ bot.on('text', (ctx) => {
         var query = "select role from botsubscribers where username = '" + ctx.message.chat.username + "';";
         con.query(query, function (error, results, fields) {
             if (error) throw error;
-            console.log(results[0].role);
             if (results[0].role == 1) {
                 switch (classifier.type) {
                     case 'youtubelink':
                         {
                             var youTubeLink = ctx.message.text.split("&");
-                            console.log(youTubeLink[0]);
-                            //ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g '+ youTubeLink[0]+')');
+                            shellcommandhelper.ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g '+ youTubeLink[0]+')');
+                            ctx.reply('Running Youtube Video');
                             break;
                         }
                     case 'commandnotavailable':
+                    {
                         ctx.reply('Invalid Command');
                         break;
+                    }
                     case 'command':
-                        console.log('Run Command');
-
+                    {
+                        ctx.reply('Running Command');
+                        break;
+                    }
+                    case 'script':
+                    {
+                        ctx.reply('Running Script');
+                        break;
+                    }                         
+                    case 'commandnotavailable':
+                    {
+                        ctx.reply('Command not configured');
+                        break;
+                    }                        
                     default:
+                    {
                         ctx.reply('Invalid Command');
+                        break;
+                    }                        
                 }
             }
             else {
