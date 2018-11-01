@@ -14,6 +14,8 @@ const { exec } = require('child_process');
 var schedule = require('node-schedule');
 const wit = new TelegrafWit(wittoken);
 const bot = new Telegraf(telegraftoken);
+var IsSomeonePresentAtHome = 0;
+var IsSuperAdminPresentAtHome = 0;
 
 bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
@@ -85,9 +87,8 @@ bot.startPolling()
 //Function with timers - It will update the sensors and environment parameters
 function SetSensorsParametersInDb() {
     GetWeatherData();
-    GetWifiStatus();
 }
-setInterval(SetSensorsParametersInDb, 300000);
+
 
 function GetWeatherData() {
     request('https://api.openweathermap.org/data/2.5/weather?zip=38016,us&appid=' + config.get('SkySuperBotDB.apikeys.openweathermap'), { json: true }, (err, res, body) => {
@@ -118,8 +119,43 @@ function GetWifiStatus() {
     });
 }
 
-var HanumanChalisaSchedule = schedule.scheduleJob(config.get('SkySuperBotDB.JobSchedules.HanumanChalisaSchedule'), function(){
+var HanumanChalisaSchedule = schedule.scheduleJob(config.get('SkySuperBotDB.JobSchedules.HanumanChalisaSchedule'), function () {
     console.log('Hanuman Chalisa Playing');
-    messagehelper.SendMessageToUserId(config.get('SkySuperBotDB.SuperAdmin.userid','Hanuman Chalisa Playing'),'Hanuman Chalisa Playing');
-  });
+    messagehelper.SendMessageToUserId(config.get('SkySuperBotDB.SuperAdmin.userid'), 'Hanuman Chalisa Playing');
+});
 
+
+function GetHomeUsersStatus() {
+    var con = mysql.createConnection(dbConfig);
+    con.connect(function (err) {
+        if (err) throw err;
+    });
+    var query = "SELECT AD.username FROM admindevices AD JOIN connecteddevices CD ON AD.DeviceAddress = CD.DeviceAddress;"
+    con.query(query, function (error, results, fields) {
+        if (error) throw error;
+        if (results.length > 0) {
+            IsSomeonePresentAtHome = 1;
+            results.forEach(function (element) {
+                if (element == config.get('SkySuperBotDB.SuperAdmin.userid'))
+                    IsSuperAdminPresentAtHome = 1;
+                else
+                    IsSuperAdminPresentAtHome = 0;
+            })
+        }
+        else {
+            IsSomeonePresentAtHome = 0;
+            IsSuperAdminPresentAtHome = 0;
+        }
+        con.end();
+    });
+}
+
+function IfNoOneIsAtHome() {
+    if (IsSomeonePresentAtHome == 0) {
+    }
+}
+
+setInterval(SetSensorsParametersInDb, 300000);
+setInterval(GetWifiStatus, 5000);
+setInterval(GetHomeUsersStatus, 5000);
+setInterval(IfNoOneIsAtHome, 5000);
