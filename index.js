@@ -53,6 +53,11 @@ bot.on('text', (ctx) => {
                             ctx.reply('Running Script');
                             break;
                         }
+                    case 'pythonscript':
+                        {
+                            ctx.reply('Running Python Script');
+                            break;
+                        }
                     case 'commandnotavailable':
                         {
                             ctx.reply('Command not configured');

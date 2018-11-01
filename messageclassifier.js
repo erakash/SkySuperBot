@@ -33,7 +33,14 @@ function ClassifyMessage(telegramcontext, callback) {
                         classificationresult.commandscript = results[0].CommandScript;
                         callback(classificationresult);
                         break;
-                    }                        
+                    } 
+                    case 'pythonscript':
+                    {
+                        classificationresult.type = 'pythonscript'
+                        classificationresult.commandscript = results[0].CommandScript;
+                        callback(classificationresult);
+                        break;
+                    }                         
                     default:
                         break;
                 }
