@@ -11,6 +11,7 @@ var shellcommandhelper = require('./shellcommandhelper');
 var telegraftoken = config.get('SkySuperBotDB.telegramtoken.token');
 var wittoken = config.get('SkySuperBotDB.wittoken.token');
 const { exec } = require('child_process');
+var schedule = require('node-schedule');
 const wit = new TelegrafWit(wittoken);
 const bot = new Telegraf(telegraftoken);
 
@@ -116,4 +117,9 @@ function GetWifiStatus() {
         });
     });
 }
+
+var HanumanChalisaSchedule = schedule.scheduleJob(config.get('SkySuperBotDB.JobSchedules.HanumanChalisaSchedule'), function(){
+    console.log('Hanuman Chalisa Playing');
+    messagehelper.SendMessageToUserId(config.get('SkySuperBotDB.SuperAdmin.userid','Hanuman Chalisa Playing'),'Hanuman Chalisa Playing');
+  });
 

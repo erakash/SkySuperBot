@@ -5,8 +5,11 @@ var telegraftoken = config.get('SkySuperBotDB.telegramtoken.token');
 const bot = new Telegraf(telegraftoken);
 
 
-function SendMessageToUserId(userid,message){
-    dbhelper.SendMessageToUserId(userid,message);
+function SendMessageToUserId(userids,message){
+    var userid = userids.split(",");
+    userid.forEach(user => {
+        dbhelper.SendMessageToUserId(user,message);
+    });    
 }
 
 
