@@ -44,6 +44,7 @@ bot.on('text', (ctx) => {
                     case 'command':
                         {
                             shellcommandhelper.ExecuteCommand(classifier.commandscript);
+                            console.log(classifier.commandscript);
                             ctx.reply('Running Command');
                             break;
                         }
