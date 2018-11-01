@@ -32,7 +32,7 @@ bot.on('text', (ctx) => {
                         {
                             var youTubeLink = ctx.message.text.split("&");
                             console.log('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g ' + youTubeLink[0] + ')');
-                            shellcommandhelper.ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g ' + youTubeLink[0] + ')');
+                            shellcommandhelper.ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g ' + youTubeLink[0] + ') -o both');
                             ctx.reply('Running Youtube Video');
                             break;
                         }
@@ -43,6 +43,7 @@ bot.on('text', (ctx) => {
                         }
                     case 'command':
                         {
+                            shellcommandhelper.ExecuteCommand(classifier.commandscript);
                             ctx.reply('Running Command');
                             break;
                         }
@@ -79,7 +80,7 @@ function SetSensorsParametersInDb() {
     GetWeatherData();
     GetWifiStatus();
 }
-setInterval(SetSensorsParametersInDb, 3000);
+setInterval(SetSensorsParametersInDb, 300000);
 
 function GetWeatherData() {
     request('https://api.openweathermap.org/data/2.5/weather?zip=38016,us&appid=' + config.get('SkySuperBotDB.apikeys.openweathermap'), { json: true }, (err, res, body) => {
@@ -100,7 +101,6 @@ function GetWifiStatus() {
         var query = "TRUNCATE TABLE connecteddevices;"
         con.query(query, function (error, results, fields) {
             ConnectedDevices.forEach(function (device) {
-                console.log(device);
                 var query = "INSERT INTO connecteddevices VALUES('" + device + "');";
                 con.query(query, function (error, results, fields) {
                     if (error) throw error;
