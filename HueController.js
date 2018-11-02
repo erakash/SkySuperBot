@@ -8,7 +8,7 @@ var username = config.get('SkySuperBotDB.HueSettings.User');
 var api;
 api = new HueApi(host, username);
 
-var stateon = lightState.create().on();
+var stateon = lightState.create().on().white(500, 100);
 var stateoff = lightState.create().off();
 
 var displayResult = function(result) {
