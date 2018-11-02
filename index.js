@@ -179,7 +179,7 @@ function IfNoOneIsAtHome() {
         lights.AllLightsOff();
     }
 }
-
+GetWeatherData();
 setInterval(SetSensorsParametersInDb, 300000);
 setInterval(GetWifiStatus, 5000);
 setInterval(GetHomeUsersStatus, 5000);
