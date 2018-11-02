@@ -15,13 +15,13 @@ var displayResult = function(result) {
     console.log(JSON.stringify(result, null, 2));
 };
 
-function AllLightsOff(){
+function AllLightsOn(){
     api.setLightState(1, stateon).then(displayResult).done();
     api.setLightState(3, stateon).then(displayResult).done();
     api.setLightState(7, stateon).then(displayResult).done();
 }
 
-function AllLightsOn(){
+function AllLightsOff(){
     api.setLightState(1, stateoff).then(displayResult).done();
     api.setLightState(3, stateoff).then(displayResult).done();
     api.setLightState(7, stateoff).then(displayResult).done();
