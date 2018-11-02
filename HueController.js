@@ -1,4 +1,4 @@
-var hue = require("node-hue-api");
+var HueApi = require("node-hue-api").HueApi;
 var config = require('config');
 
 var displayResult = function(result) {
