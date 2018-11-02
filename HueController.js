@@ -22,9 +22,17 @@ function AllLightsOn(){
 }
 
 function AllLightsOff(){
-    api.setLightState(1, stateoff).then(displayResult).done();
-    api.setLightState(3, stateoff).then(displayResult).done();
-    api.setLightState(7, stateoff).then(displayResult).done();
+    api.setLightState(1, stateoff);
+    api.setLightState(2, stateoff);
+    api.setLightState(3, stateoff);
+    api.setLightState(4, stateoff);
+    api.setLightState(5, stateoff);
+    api.setLightState(6, stateoff);
+    api.setLightState(7, stateoff);
+    api.setLightState(8, stateoff);
+    api.setLightState(9, stateoff);
+    api.setLightState(10, stateoff);
+    api.setLightState(11, stateoff);
 }
 
 module.exports.AllLightsOff = AllLightsOff;
