@@ -35,5 +35,10 @@ function AllLightsOff(){
     api.setLightState(11, stateoff);
 }
 
+function SetLightColorBasedOnTemprature(light,temp){
+
+}
+
 module.exports.AllLightsOff = AllLightsOff;
 module.exports.AllLightsOn = AllLightsOn;
+module.exports.SetLightColorBasedOnTemprature = SetLightColorBasedOnTemprature;

@@ -30,8 +30,8 @@ var manualoverride = 0;
 //--------------Bot Commands Handler-----------//
 bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-bot.hears('Manual', (ctx) => {ctx.reply('Manual Overrides Enabled');manualoverride=1});
-bot.hears('Auto', (ctx) => {ctx.reply('Manual Overrides Disabled');manualoverride=0});
+bot.hears('Manual', (ctx) => {ctx.reply('Manual Override Enabled');manualoverride=1});
+bot.hears('Auto', (ctx) => {ctx.reply('Manual Override Disabled');manualoverride=0});
 bot.on('text', (ctx) => {
     dbhelper.InsertUpdateDetails(ctx.message.chat);
     messageclassifier.ClassifyMessage(ctx.message, function (classifier) {
@@ -175,17 +175,23 @@ function GetHomeUsersStatus() {
 }
 
 function IfNoOneIsAtHome() {
-    console.log(manualoverride);
-    if (IsSomeonePresentAtHome == 0) {
+    if (IsSomeonePresentAtHome == 0 && manualoverride == 0) {
         lights.AllLightsOff();
     }
 }
 
 function IfSomeOneIsAtHome(){
-    
+    var datesunrise = new Date(sunrise);
+    var datesunset = new Date(sunset);
+    console.log(datesunrise);
+    console.log(datesunset);
+    if (IsSomeonePresentAtHome == 1 && manualoverride == 0) {
+
+    }
 }
 
 setInterval(SetSensorsParametersInDb, 300000);
 setInterval(GetWifiStatus, 5000);
 setInterval(GetHomeUsersStatus, 5000);
 setInterval(IfNoOneIsAtHome, 5000);
+setInterval(IfSomeOneIsAtHome, 5000);
