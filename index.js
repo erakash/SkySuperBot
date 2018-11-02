@@ -5,6 +5,7 @@ const request = require('request');
 const Telegraf = require('telegraf')
 const TelegrafWit = require('telegraf-wit')
 var dbhelper = require('./DBHelper');
+var lights = require('./HueController');
 var messagehelper = require('./MessageHelper');
 var messageclassifier = require('./messageclassifier');
 var shellcommandhelper = require('./shellcommandhelper');
@@ -16,6 +17,9 @@ const wit = new TelegrafWit(wittoken);
 const bot = new Telegraf(telegraftoken);
 var IsSomeonePresentAtHome = 0;
 var IsSuperAdminPresentAtHome = 0;
+
+
+//-----------Hue Settings-------------//
 
 bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
@@ -120,8 +124,9 @@ function GetWifiStatus() {
 }
 
 var HanumanChalisaSchedule = schedule.scheduleJob(config.get('SkySuperBotDB.JobSchedules.HanumanChalisaSchedule'), function () {
-    console.log('Hanuman Chalisa Playing');
-    messagehelper.SendMessageToUserId(config.get('SkySuperBotDB.SuperAdmin.userid'), 'Hanuman Chalisa Playing');
+    if(IsSuperAdminPresentAtHome==1){
+        messagehelper.SendMessageToUserId(config.get('SkySuperBotDB.SuperAdmin.userid'), 'Hanuman Chalisa Playing');
+    }
 });
 
 
@@ -166,3 +171,5 @@ setInterval(SetSensorsParametersInDb, 300000);
 setInterval(GetWifiStatus, 5000);
 setInterval(GetHomeUsersStatus, 5000);
 setInterval(IfNoOneIsAtHome, 5000);
+
+var test = lights.GetState();

@@ -13,6 +13,7 @@
   "author": "Akash Sharma",
   "license": "ISC",
   "dependencies": {
+    "node-hue-api": "^2.4.4",
     "node-schedule": "^1.3.0"
   }
 }
