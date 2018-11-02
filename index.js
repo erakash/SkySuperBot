@@ -23,12 +23,15 @@ var sunrise;
 var sunset;
 var temp;
 var weather;
+var manualoverride = 0;
 //----------------------------------------//
 
 
 //--------------Bot Commands Handler-----------//
 bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
+bot.hears('Manual', (ctx) => {ctx.reply('Manual Overrides Enabled');manualoverride=1});
+bot.hears('Auto', (ctx) => {ctx.reply('Manual Overrides Disabled');manualoverride=0});
 bot.on('text', (ctx) => {
     dbhelper.InsertUpdateDetails(ctx.message.chat);
     messageclassifier.ClassifyMessage(ctx.message, function (classifier) {
@@ -98,7 +101,7 @@ bot.startPolling()
 function SetSensorsParametersInDb() {
     GetWeatherData();
 }
-
+GetWeatherData(); //Initialize the attributes
 
 function GetWeatherData() {
     request('https://api.openweathermap.org/data/2.5/weather?zip=38016,us&appid=' + config.get('SkySuperBotDB.apikeys.openweathermap'), { json: true }, (err, res, body) => {
@@ -113,6 +116,7 @@ function GetWeatherData() {
         dbhelper.UpdateInsertHomeAttributes('weather', body.weather[0].id);*/
     });
 }
+
 function GetWifiStatus() {
     exec("sudo arp-scan --localnet | awk -F'\t' '$2 ~ /([0-9a-f][0-9a-f]:){5}/ {print $2}'", (err, stdout, stderr) => {
         var ConnectedDevices = stdout.split("\n");
@@ -171,17 +175,17 @@ function GetHomeUsersStatus() {
 }
 
 function IfNoOneIsAtHome() {
-    console.log(weather);
-    console.log(temp);
-    console.log(sunrise);
-    console.log(sunset);
+    console.log(manualoverride);
     if (IsSomeonePresentAtHome == 0) {
         lights.AllLightsOff();
     }
 }
-GetWeatherData();
+
+function IfSomeOneIsAtHome(){
+    
+}
+
 setInterval(SetSensorsParametersInDb, 300000);
 setInterval(GetWifiStatus, 5000);
 setInterval(GetHomeUsersStatus, 5000);
 setInterval(IfNoOneIsAtHome, 5000);
-
