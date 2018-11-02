@@ -135,16 +135,17 @@ function GetHomeUsersStatus() {
         if (error) throw error;
         if (results.length > 0) {
             IsSomeonePresentAtHome = 1;
-            results.forEach(function (element) {
-                console.log(element);
-                if (element == config.get('SkySuperBotDB.SuperAdmin.userid'))
+            for(var i=0;i<results.length;i++)
+            {
+                console.log(results[i].username);
+                if (results[i].username == config.get('SkySuperBotDB.SuperAdmin.userid'))
                 {
                     IsSuperAdminPresentAtHome = 1;
                     break;
                 }
                 else
                     IsSuperAdminPresentAtHome = 0;
-            })
+            }
         }
         else {
             IsSomeonePresentAtHome = 0;
