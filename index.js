@@ -24,14 +24,17 @@ var sunset;
 var temp;
 var weather;
 var manualoverride = 0;
+var IsWeekday = 0;
+var BeforeSunrisePeriod;
+var AfterSunSetPeriod;
 //----------------------------------------//
 
 
 //--------------Bot Commands Handler-----------//
 bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-bot.hears('Manual', (ctx) => {ctx.reply('Manual Override Enabled');manualoverride=1});
-bot.hears('Auto', (ctx) => {ctx.reply('Manual Override Disabled');manualoverride=0});
+bot.hears('Manual', (ctx) => { ctx.reply('Manual Override Enabled'); manualoverride = 1 });
+bot.hears('Auto', (ctx) => { ctx.reply('Manual Override Disabled'); manualoverride = 0 });
 bot.on('text', (ctx) => {
     dbhelper.InsertUpdateDetails(ctx.message.chat);
     messageclassifier.ClassifyMessage(ctx.message, function (classifier) {
@@ -138,7 +141,7 @@ function GetWifiStatus() {
 }
 
 var HanumanChalisaSchedule = schedule.scheduleJob(config.get('SkySuperBotDB.JobSchedules.HanumanChalisaSchedule'), function () {
-    if(IsSuperAdminPresentAtHome==1){
+    if (IsSuperAdminPresentAtHome == 1) {
         messagehelper.SendMessageToUserId(config.get('SkySuperBotDB.SuperAdmin.userid'), 'Hanuman Chalisa Playing');
     }
 });
@@ -154,11 +157,9 @@ function GetHomeUsersStatus() {
         if (error) throw error;
         if (results.length > 0) {
             IsSomeonePresentAtHome = 1;
-            for(var i=0;i<results.length;i++)
-            {
+            for (var i = 0; i < results.length; i++) {
                 console.log(results[i].username);
-                if (results[i].username == config.get('SkySuperBotDB.SuperAdmin.userid'))
-                {
+                if (results[i].username == config.get('SkySuperBotDB.SuperAdmin.userid')) {
                     IsSuperAdminPresentAtHome = 1;
                     break;
                 }
@@ -180,9 +181,12 @@ function IfNoOneIsAtHome() {
     }
 }
 
-function IfSomeOneIsAtHome(){
-    var datesunrise = new Date(sunrise*1000-18000000);
-    var datesunset = new Date(sunset*1000-18000000);
+function IfSomeOneIsAtHome() {
+    var dt = new Date();
+    var utcDate = dt.toUTCString();
+    console.log(utcDate);
+    var datesunrise = new Date(sunrise * 1000 - 18000000);
+    var datesunset = new Date(sunset * 1000 - 18000000);
     console.log(datesunrise);
     console.log(datesunset);
     if (IsSomeonePresentAtHome == 1 && manualoverride == 0) {
