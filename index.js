@@ -25,14 +25,16 @@ var temp;
 var weather;
 var manualoverride = 0;
 var IsWeekday = 0;
-var BeforeSunrisePeriod;
-var AfterSunSetPeriod;
+var AwakeTime = null;
+var SleepTime = null;
 //----------------------------------------//
 
 
 //--------------Bot Commands Handler-----------//
 bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
+bot.hears('Awake', (ctx) => {ctx.reply('Good Morning');AwakeTime = new Date();});
+bot.hears('Sleep', (ctx) => {ctx.reply('Good Night');SleepTime = new Date();});
 bot.hears('Manual', (ctx) => { ctx.reply('Manual Override Enabled'); manualoverride = 1 });
 bot.hears('Auto', (ctx) => { ctx.reply('Manual Override Disabled'); manualoverride = 0 });
 bot.on('text', (ctx) => {
@@ -182,13 +184,10 @@ function IfNoOneIsAtHome() {
 }
 
 function IfSomeOneIsAtHome() {
-    var dt = new Date();
-    var utcDate = dt.toUTCString();
-    console.log(utcDate);
+    console.log(AwakeTime.toUTCString());
+    console.log(SleepTime.toUTCString());
     var datesunrise = new Date(sunrise * 1000 - 18000000);
     var datesunset = new Date(sunset * 1000 - 18000000);
-    console.log(datesunrise);
-    console.log(datesunset);
     if (IsSomeonePresentAtHome == 1 && manualoverride == 0) {
 
     }
