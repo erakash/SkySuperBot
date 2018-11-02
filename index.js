@@ -164,7 +164,7 @@ function IfNoOneIsAtHome() {
     console.log(IsSomeonePresentAtHome);
     console.log(IsSuperAdminPresentAtHome);
     if (IsSomeonePresentAtHome == 0) {
-        AllLightsOff();
+        lights.AllLightsOff();
     }
 }
 
