@@ -172,4 +172,4 @@ setInterval(GetWifiStatus, 5000);
 setInterval(GetHomeUsersStatus, 5000);
 setInterval(IfNoOneIsAtHome, 5000);
 
-var test = lights.GetState();
+var test = lights.AllLightsOn();
