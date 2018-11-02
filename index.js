@@ -164,6 +164,7 @@ function IfNoOneIsAtHome() {
     console.log(IsSomeonePresentAtHome);
     console.log(IsSuperAdminPresentAtHome);
     if (IsSomeonePresentAtHome == 0) {
+        AllLightsOff();
     }
 }
 
@@ -172,4 +173,3 @@ setInterval(GetWifiStatus, 5000);
 setInterval(GetHomeUsersStatus, 5000);
 setInterval(IfNoOneIsAtHome, 5000);
 
-var test = lights.AllLightsOn();
