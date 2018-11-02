@@ -181,8 +181,8 @@ function IfNoOneIsAtHome() {
 }
 
 function IfSomeOneIsAtHome(){
-    var datesunrise = new Date(sunrise);
-    var datesunset = new Date(sunset);
+    var datesunrise = new Date(sunrise*1000);
+    var datesunset = new Date(sunset*1000);
     console.log(datesunrise);
     console.log(datesunset);
     if (IsSomeonePresentAtHome == 1 && manualoverride == 0) {
