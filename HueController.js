@@ -1,3 +1,18 @@
+/*-------------Reference Number for Lamps---------------
+ 1 - Color Lamp Hall
+ 2 - Color Lamp - My Room
+ 3 - Color Lamp - Hall
+ 4 - Color Lamp - My Room
+ 5 - White Lamp - Hall
+ 6 - White Lamp - Hall
+ 7 - Color Lamp - My Room
+ 8 - Color Lamp - My Room
+ 9 - White Lamp - Kitchen
+ 10 - Color Lamp - Kitchen
+ 11 - White Lamp Kitchen
+ */
+
+
 var hue = require("node-hue-api");
 var config = require('config');
 var HueApi = hue.HueApi;
@@ -16,13 +31,11 @@ var displayResult = function (result) {
 };
 
 function AllLightsOn() {
-    api.setLightState(1, stateon);
-    api.setLightState(2, stateon);
-    api.setLightState(3, stateon);
-    api.setLightState(4, stateon);
     api.setLightState(5, stateon);
     api.setLightState(6, stateon);
-    api.setLightState(7, stateon);
+    api.setLightState(9, stateon);
+    api.setLightState(11, stateon);
+    api.setLightState(2, stateon);
 }
 
 function AllLightsOff() {
@@ -42,7 +55,7 @@ function AllLightsOff() {
 function SetLightColorBasedOnTemprature(light, temp) {
     var tempFahrenheit = ((temp - 273.15) * 1.8) + 32;
     var colorstate;
-    console.log(tempFahrenheit);
+    //console.log(tempFahrenheit);
     if (tempFahrenheit > 90)
         colorstate = lightState.create().on().rgb(255, 165, 0);
     else if (tempFahrenheit > 80 && tempFahrenheit <= 90)

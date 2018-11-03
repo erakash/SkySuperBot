@@ -213,8 +213,10 @@ function IfSomeOneIsAtHome() {
     }
 }
 
-setInterval(SetSensorsParametersInDb, 300000);
+//setInterval(SetSensorsParametersInDb, 300000);
 //setInterval(GetWifiStatus, 5000);
 //setInterval(GetHomeUsersStatus, 5000);
 //setInterval(IfNoOneIsAtHome, 5000);
 //setInterval(IfSomeOneIsAtHome, 5000);
+lights.SetLightColorBasedOnTemprature(11,273);
+
