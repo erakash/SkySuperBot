@@ -190,7 +190,7 @@ function IfNoOneIsAtHome() {
 }
 
 function IfSomeOneIsAtHome() {
-    var currentdatetime = new Date(sunrise * 1000);
+    var currentdatetime = new Date();
     var datesunrise = new Date(sunrise * 1000);
     var datesunset = new Date(sunset * 1000);
     {
