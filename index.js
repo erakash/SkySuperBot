@@ -25,16 +25,16 @@ var temp;
 var weather;
 var manualoverride = 0;
 var IsWeekday = 0;
-var AwakeTime = null;
-var SleepTime = null;
+var AwakeStatus = 0;
+var SleepStatus = 0;
 //----------------------------------------//
 
 
 //--------------Bot Commands Handler-----------//
 bot.start((ctx) => ctx.reply('Welcome!'));
 bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-bot.hears('Awake', (ctx) => { ctx.reply('Good Morning'); AwakeTime = new Date(); });
-bot.hears('Sleep', (ctx) => { ctx.reply('Good Night'); SleepTime = new Date(); });
+bot.hears('Awake', (ctx) => { ctx.reply('Good Morning'); AwakeStatus = 1; });
+bot.hears('Sleep', (ctx) => { ctx.reply('Good Night'); SleepStatus = 1; });
 bot.hears('Manual', (ctx) => { ctx.reply('Manual Override Enabled'); manualoverride = 1 });
 bot.hears('Auto', (ctx) => { ctx.reply('Manual Override Disabled'); manualoverride = 0 });
 bot.on('text', (ctx) => {
@@ -52,7 +52,7 @@ bot.on('text', (ctx) => {
                     case 'youtubelink':
                         {
                             var youTubeLink = ctx.message.text.split("&");
-                            console.log('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g ' + youTubeLink[0] + ')');
+                            //console.log('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g ' + youTubeLink[0] + ')');
                             shellcommandhelper.ExecuteCommand('sudo killall vlc; sudo killall omxplayer.bin;sudo vcgencmd display_power 1;sudo omxplayer $(youtube-dl -f mp4 -g ' + youTubeLink[0] + ') -o both');
                             ctx.reply('Running Youtube Video');
                             break;
@@ -65,7 +65,7 @@ bot.on('text', (ctx) => {
                     case 'command':
                         {
                             shellcommandhelper.ExecuteCommand(classifier.commandscript);
-                            console.log(classifier.commandscript);
+                            //console.log(classifier.commandscript);
                             ctx.reply('Running Command');
                             break;
                         }
@@ -148,6 +148,11 @@ var HanumanChalisaSchedule = schedule.scheduleJob(config.get('SkySuperBotDB.JobS
     }
 });
 
+var ResetWakeUpAndSleepSchedule = schedule.scheduleJob(config.get('SkySuperBotDB.JobSchedules.WakeupAndSleepResetSchedule'), function () {
+    AwakeStatus = 0;
+    SleepStatus = 0;
+    messagehelper.SendMessageToUserId(config.get('SkySuperBotDB.SuperAdmin.userid'), 'Wakeup Sleep Reset Done');
+});
 
 function GetHomeUsersStatus() {
     var con = mysql.createConnection(dbConfig);
@@ -160,7 +165,7 @@ function GetHomeUsersStatus() {
         if (results.length > 0) {
             IsSomeonePresentAtHome = 1;
             for (var i = 0; i < results.length; i++) {
-                console.log(results[i].username);
+                //console.log(results[i].username);
                 if (results[i].username == config.get('SkySuperBotDB.SuperAdmin.userid')) {
                     IsSuperAdminPresentAtHome = 1;
                     break;
@@ -184,14 +189,20 @@ function IfNoOneIsAtHome() {
 }
 
 function IfSomeOneIsAtHome() {
-    if (AwakeTime)
-        console.log(AwakeTime.toUTCString());
-    if (SleepTime)
-        console.log(SleepTime.toUTCString());
-    var datesunrise = new Date(sunrise * 1000 - 18000000);
-    var datesunset = new Date(sunset * 1000 - 18000000);
-    if (IsSomeonePresentAtHome == 1 && manualoverride == 0) {
-
+    var currentdatetime = new Date(sunrise * 1000);
+    var datesunrise = new Date(sunrise * 1000);
+    var datesunset = new Date(sunset * 1000);
+    {
+        if (IsSomeonePresentAtHome == 1 && manualoverride == 0) {
+            if (AwakeStatus == 1 && currentdatetime < datesunrise)
+                console.log('Turn on the lights. Good Morning');
+            else if (AwakeStatus == 1 && currentdatetime > datesunrise)
+                console.log('Turn off the lights. Sun is here.');
+            else if (SleepStatus == 0 && currentdatetime > datesunset)
+                console.log('Turn on the lights. Evening Time');
+            else if (SleepStatus == 1)
+                console.log('Turn off the lights. Sleeping Time');
+        }
     }
 }
 
