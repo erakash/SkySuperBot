@@ -16,9 +16,13 @@ var displayResult = function(result) {
 };
 
 function AllLightsOn(){
-    api.setLightState(1, stateon).then(displayResult).done();
-    api.setLightState(3, stateon).then(displayResult).done();
-    api.setLightState(7, stateon).then(displayResult).done();
+    api.setLightState(1, stateon);
+    api.setLightState(2, stateon);
+    api.setLightState(3, stateon);
+    api.setLightState(4, stateon);
+    api.setLightState(5, stateon);
+    api.setLightState(6, stateon);
+    api.setLightState(7, stateon);
 }
 
 function AllLightsOff(){

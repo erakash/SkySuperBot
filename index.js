@@ -195,13 +195,13 @@ function IfSomeOneIsAtHome() {
     {
         if (IsSomeonePresentAtHome == 1 && manualoverride == 0) {
             if (AwakeStatus == 1 && currentdatetime < datesunrise)
-                console.log('Turn on the lights. Good Morning');
+                AllLightsOn();
             else if (AwakeStatus == 1 && currentdatetime > datesunrise)
-                console.log('Turn off the lights. Sun is here.');
+                lights.AllLightsOff();
             else if (SleepStatus == 0 && currentdatetime > datesunset)
-                console.log('Turn on the lights. Evening Time');
+                AllLightsOn();
             else if (SleepStatus == 1)
-                console.log('Turn off the lights. Sleeping Time');
+                lights.AllLightsOff();
         }
     }
 }
