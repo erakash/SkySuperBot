@@ -27,6 +27,7 @@ var manualoverride = 0;
 var IsWeekday = 0;
 var AwakeStatus = 0;
 var SleepStatus = 0;
+var TempratureLightNumber = config.get('SkySuperBotDB.HueSettings.templight')
 //----------------------------------------//
 
 
@@ -194,20 +195,26 @@ function IfSomeOneIsAtHome() {
     var datesunset = new Date(sunset * 1000);
     {
         if (IsSomeonePresentAtHome == 1 && manualoverride == 0) {
-            if (AwakeStatus == 1 && currentdatetime < datesunrise)
-                AllLightsOn();
-            else if (AwakeStatus == 1 && currentdatetime > datesunrise)
+            if (AwakeStatus == 1 && currentdatetime < datesunrise) {
+                lights.AllLightsOn();
+                lights.SetLightColorBasedOnTemprature(TempratureLightNumber,temp);
+            }
+            else if (AwakeStatus == 1 && currentdatetime > datesunrise) {
                 lights.AllLightsOff();
-            else if (SleepStatus == 0 && currentdatetime > datesunset)
-                AllLightsOn();
-            else if (SleepStatus == 1)
+            }
+            else if (SleepStatus == 0 && currentdatetime > datesunset) {
+                lights.AllLightsOn();
+                lights.SetLightColorBasedOnTemprature(TempratureLightNumber,temp);
+            }
+            else if (SleepStatus == 1) {
                 lights.AllLightsOff();
+            }
         }
     }
 }
 
 setInterval(SetSensorsParametersInDb, 300000);
-setInterval(GetWifiStatus, 5000);
-setInterval(GetHomeUsersStatus, 5000);
-setInterval(IfNoOneIsAtHome, 5000);
-setInterval(IfSomeOneIsAtHome, 5000);
+//setInterval(GetWifiStatus, 5000);
+//setInterval(GetHomeUsersStatus, 5000);
+//setInterval(IfNoOneIsAtHome, 5000);
+//setInterval(IfSomeOneIsAtHome, 5000);

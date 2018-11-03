@@ -11,11 +11,11 @@ api = new HueApi(host, username);
 var stateon = lightState.create().on().white(500, 100);
 var stateoff = lightState.create().off();
 
-var displayResult = function(result) {
+var displayResult = function (result) {
     console.log(JSON.stringify(result, null, 2));
 };
 
-function AllLightsOn(){
+function AllLightsOn() {
     api.setLightState(1, stateon);
     api.setLightState(2, stateon);
     api.setLightState(3, stateon);
@@ -25,7 +25,7 @@ function AllLightsOn(){
     api.setLightState(7, stateon);
 }
 
-function AllLightsOff(){
+function AllLightsOff() {
     api.setLightState(1, stateoff);
     api.setLightState(2, stateoff);
     api.setLightState(3, stateoff);
@@ -39,8 +39,33 @@ function AllLightsOff(){
     api.setLightState(11, stateoff);
 }
 
-function SetLightColorBasedOnTemprature(light,temp){
-
+function SetLightColorBasedOnTemprature(light, temp) {
+    var tempFahrenheit = ((temp - 273.15) * 1.8) + 32;
+    var colorstate;
+    console.log(tempFahrenheit);
+    if (tempFahrenheit > 90)
+        colorstate = lightState.create().on().rgb(255, 165, 0);
+    else if (tempFahrenheit > 80 && tempFahrenheit <= 90)
+        colorstate = lightState.create().on().rgb(255, 255, 0);
+    else if (tempFahrenheit > 70 && tempFahrenheit <= 80)
+        colorstate = lightState.create().on().rgb(124, 252, 0);
+    else if (tempFahrenheit > 60 && tempFahrenheit <= 70)
+        colorstate = lightState.create().on().rgb(127, 255, 212);
+    else if (tempFahrenheit > 50 && tempFahrenheit <= 60)
+        colorstate = lightState.create().on().rgb(230, 230, 250);
+    else if (tempFahrenheit > 40 && tempFahrenheit <= 50)
+        colorstate = lightState.create().on().rgb(0, 191, 255);
+    else if (tempFahrenheit > 30 && tempFahrenheit <= 40)
+        colorstate = lightState.create().on().rgb(0, 255, 255);
+    else if (tempFahrenheit > 20 && tempFahrenheit <= 30)
+        colorstate = lightState.create().on().rgb(135, 206, 250);
+    else if (tempFahrenheit > 10 && tempFahrenheit <= 20)
+        colorstate = lightState.create().on().rgb(123, 104, 238);
+    else if (tempFahrenheit > 0 && tempFahrenheit <= 20)
+        colorstate = lightState.create().on().rgb(0, 0, 255);
+    else
+        colorstate = lightState.create().on().rgb(148,0,211);
+    api.setLightState(light, colorstate);
 }
 
 module.exports.AllLightsOff = AllLightsOff;
