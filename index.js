@@ -193,6 +193,11 @@ function IfSomeOneIsAtHome() {
     var currentdatetime = Math.round((new Date()).getTime() / 1000);
     var datesunrise = new Date(sunrise * 1000);
     var datesunset = new Date(sunset * 1000);
+    console.log(datesunrise);
+    console.log(datesunset);
+    console.log(currentdatetime);
+    console.log(IsSomeonePresentAtHome);
+    console.log(IsSuperAdminPresentAtHome);
     {
         if (IsSomeonePresentAtHome == 1 && manualoverride == 0) {
             if (AwakeStatus == 1 && currentdatetime < datesunrise) {
