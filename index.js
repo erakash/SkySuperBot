@@ -219,9 +219,9 @@ function IfSomeOneIsAtHome() {
 }
 
 setInterval(SetSensorsParametersInDb, 300000);
-setInterval(GetWifiStatus, 5000);
+setInterval(GetWifiStatus, 6000);
 setInterval(GetHomeUsersStatus, 5000);
-setInterval(IfNoOneIsAtHome, 5000);
-setInterval(IfSomeOneIsAtHome, 5000);
+setInterval(IfNoOneIsAtHome, 3000);
+setInterval(IfSomeOneIsAtHome, 3000);
 
 
