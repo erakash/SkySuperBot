@@ -176,6 +176,7 @@ function GetHomeUsersStatus() {
             }
         }
         else {
+            console.log('Setting the var to zero');
             IsSomeonePresentAtHome = 0;
             IsSuperAdminPresentAtHome = 0;
         }
@@ -193,9 +194,6 @@ function IfSomeOneIsAtHome() {
     var currentdatetime = new Date();
     var datesunrise = new Date(sunrise * 1000);
     var datesunset = new Date(sunset * 1000);
-    console.log(datesunrise);
-    console.log(datesunset);
-    console.log(currentdatetime);
     console.log(IsSomeonePresentAtHome);
     console.log(IsSuperAdminPresentAtHome);
     {
