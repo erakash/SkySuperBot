@@ -31,10 +31,10 @@ var displayResult = function (result) {
 };
 
 function AllLightsOn() {
-    //api.setLightState(5, stateon);
-    //api.setLightState(6, stateon);
-    api.setLightState(9, stateon);
-    api.setLightState(11, stateon);
+    api.setLightState(5, stateon);
+    api.setLightState(6, stateon);
+    //api.setLightState(9, stateon);
+    //api.setLightState(11, stateon);
     api.setLightState(2, stateon);
 }
 
